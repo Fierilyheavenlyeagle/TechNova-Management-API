@@ -1,0 +1,143 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Company Project API",
+    "description": "API for managing humans resources and distributors",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+  "apiKeyAuth": {
+    "type": "apiKey",
+    "name": "x-api-key",
+    "in": "header"
+  }
+},
+  "security": [{"apiKeyAuth": []}],
+  "paths": {
+    "/workers": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new worker",
+        "consumes" : ["application/json"],
+        "parameters": [
+          {
+            "in":"body",
+            "name":"worker",
+            "description":"Worker to add",
+            "required":true,
+            "schema":{
+              "type":"object",
+              "properties":{
+                "name":{"type":"string"},
+                "age":{"type":"integer"},
+                "position":{"type":"string"},
+                "department":{"type":"string"},
+                "salary":{"type":"number"},
+                "active":{"type":"boolean"}
+              },
+              "required":["id","name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Correctly created worker"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/workers/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of worker to update"
+          },
+          {
+            "in":"body",
+            "name":"worker",
+            "description":"Worker to update","required":true,
+            "schema":{
+              "type":"object",
+              "properties":{
+                "name":{"type":"string"},
+                "age":{"type":"integer"},
+                "position":{"type":"string"},
+                "department":{"type":"string"},
+                "salary":{"type":"number"},
+                "active":{"type":"boolean"}
+              },
+              "required":["id","name"]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a worker by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of worker to delete"
+          }
+        ],
+    "responses": {
+      "200": { "description": "Worker deleted successfully" },
+      "404": { "description": "Worker not found" },
+       "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    }
+      }
+    }
+  }
