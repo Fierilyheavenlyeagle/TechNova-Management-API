@@ -9,6 +9,11 @@ import cors from "cors";
 import workersRoutes from "./routes/workers.js";
 import connectDB from "./config/db.js";
 
+import passport from "passport";
+import "./config/passport.js";
+
+import authRoutes from "./routes/auth.js";
+
 connectDB();
 
 const swaggerFile = JSON.parse(
@@ -22,9 +27,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(passport.initialize());
+
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+app.use("/auth", authRoutes);
 app.use("/workers", workersRoutes);
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

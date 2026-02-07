@@ -115,6 +115,16 @@ const destructionId = AsyncWrapper.wrapAsync(async (req, res) => {
 
 /* -------------------- UPDATE -------------------- */
 const updateId = AsyncWrapper.wrapAsync(async (req, res) => {
+  const age = Number(req.body.age);
+
+  if (isNaN(age) || age < 18 || age > 65) {
+    throw new Api400Error(
+      "Invalid Age",
+      undefined,
+      `Age must be a number between 18 and 65. Received: ${age}`,
+    );
+  }
+
   WorkerIdValidator.validateWorkerId(req.params.id);
 
   const id = Number(req.params.id);

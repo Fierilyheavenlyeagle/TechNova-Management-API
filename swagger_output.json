@@ -11,13 +11,14 @@
     "http"
   ],
   "securityDefinitions": {
-  "apiKeyAuth": {
+  "BearerAuth": {
     "type": "apiKey",
-    "name": "x-api-key",
-    "in": "header"
+    "name": "Authorization",
+    "in": "header",
+    "description": "JWT Authorization header"
   }
 },
-  "security": [{"apiKeyAuth": []}],
+  "security": [{"BearerAuth": []}],
   "paths": {
     "/workers": {
       "get": {
@@ -61,7 +62,7 @@
         },
         "security": [
           {
-            "apiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -133,7 +134,7 @@
       "404": { "description": "Worker not found" },
        "security": [
           {
-            "apiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }

@@ -1,10 +1,8 @@
-import { Router } from "express";
+import express from "express";
 import workers from "../controllers/workers.js";
-import { ApiKeyValidator } from "../utils/validators.js";
+import { auth } from "../middleware/auth.js";
 
-const routes = Router();
-
-routes.use(ApiKeyValidator.validateApiKey);
+const routes = express.Router();
 
 /**
  * @swagger
@@ -19,7 +17,7 @@ routes.use(ApiKeyValidator.validateApiKey);
  *       401:
  *         description: Unauthorized
  */
-routes.get("/", workers.findAll);
+routes.get("/", auth, workers.findAll);
 
 /**
  * @swagger
@@ -41,7 +39,7 @@ routes.get("/", workers.findAll);
  *       404:
  *         description: Not found
  */
-routes.get("/:id", workers.findOne);
+routes.get("/:id", auth, workers.findOne);
 
 /**
  * @swagger
@@ -51,7 +49,7 @@ routes.get("/:id", workers.findOne);
  *       - ApiKeyAuth: []
  *     summary: Create worker
  */
-routes.post("/", workers.create);
+routes.post("/", auth, workers.create);
 
 /**
  * @swagger
@@ -61,7 +59,7 @@ routes.post("/", workers.create);
  *       - ApiKeyAuth: []
  *     summary: Update worker
  */
-routes.put("/:id", workers.updateId);
+routes.put("/:id", auth, workers.updateId);
 
 /**
  * @swagger
@@ -71,6 +69,6 @@ routes.put("/:id", workers.updateId);
  *       - ApiKeyAuth: []
  *     summary: Delete worker
  */
-routes.delete("/:id", workers.destructionId);
+routes.delete("/:id", auth, workers.destructionId);
 
 export default routes;

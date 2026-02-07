@@ -3,8 +3,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5",
     "node": "^25.5.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
@@ -13,7 +17,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
-   "scripts": {
+  "scripts": {
     "swagger": "node swagger.js",
     "dev": "nodemon server.js",
     "start": "node server.js"
