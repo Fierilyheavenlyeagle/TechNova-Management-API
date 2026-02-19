@@ -11,10 +11,12 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    // Successful authentication, redirect home with token.
-    res.redirect(`http://localhost:3000/auth/success?token=${req.user.token}`);
+    const baseUrl = process.env.RENDER_EXTERNAL_URL || "http://localhost:3000";
+
+    res.redirect(`${baseUrl}/auth/success?token=${req.user.token}`);
   },
 );
+
 router.get("/success", (req, res) => {
   const { token } = req.query;
 
