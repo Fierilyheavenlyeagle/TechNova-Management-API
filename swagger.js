@@ -1,6 +1,6 @@
 import swaggerAutogen from "swagger-autogen";
-const outputFile = "./swagger_output.json";
 
+const outputFile = "./swagger_output.json";
 const endpointsFiles = ["./routes/workers.js"];
 
 const doc = {
@@ -8,8 +8,10 @@ const doc = {
     title: "Company Project API",
     description: "API for managing humans resources and distributors",
   },
-  host: "localhost:3000",
-  schemes: ["http"],
+  host: process.env.RENDER_EXTERNAL_URL
+    ? process.env.RENDER_EXTERNAL_URL.replace('https://', '')
+    : "localhost:3000",
+  schemes: process.env.RENDER_EXTERNAL_URL ? ["https"] : ["http"],
   securityDefinitions: {
     ApiKeyAuth: {
       type: "apiKey",
