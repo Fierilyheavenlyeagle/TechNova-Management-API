@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 
+import departmentRoutes from "./routes/departments.js";
+
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
@@ -33,7 +35,7 @@ app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use("/auth", authRoutes);
 app.use("/workers", workersRoutes);
-
+app.use("/departments", departmentRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
