@@ -12,14 +12,17 @@
     { "name": "Departments", "description": "Department Management - Cloud Operations" }
   ],
 
-    "securityDefinitions": {
-    "Bearer": {
-      "type": "bearerToken",
-      "name": "Authorization",
-      "in": "header",
-      "description": "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'"
-    }
-  },
+"securityDefinitions": {
+  "Bearer": {
+    "type": "apiKey",
+    "name": "Authorization",
+    "in": "header",
+    "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+  }
+},
+"security": [
+  { "Bearer": [] }
+],
 
   "paths": {
 
