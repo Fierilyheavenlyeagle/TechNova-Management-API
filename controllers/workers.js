@@ -7,7 +7,7 @@ import {
   Api400Error,
 } from "../utils/custom_error/apiError.js";
 
-/* -------------------- CREATE -------------------- */
+/* -------------------- CREAR -------------------- */
 const create = AsyncWrapper.wrapAsync(async (req, res) => {
   const age = Number(req.body.age);
 
@@ -169,3 +169,4 @@ export default {
   destructionId,
   updateId,
 };
+//

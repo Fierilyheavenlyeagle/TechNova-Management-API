@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 
 import departmentRoutes from "./routes/departments.js";
-
+//
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
-import cors from "cors";
+import cors from "cors"; 
 
 import workersRoutes from "./routes/workers.js";
 import connectDB from "./config/db.js";

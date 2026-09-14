@@ -5,7 +5,7 @@ class WorkerIdValidator {
     }
   }
 }
-
+//
 class ApiKeyValidator {
   static validateApiKey(req, res, next) {
     const apiKey = req.headers["x-api-key"];

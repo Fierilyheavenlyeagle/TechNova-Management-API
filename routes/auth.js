@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
 const router = express.Router();
-
+// Ruta para iniciar autenticación con Google
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] }),

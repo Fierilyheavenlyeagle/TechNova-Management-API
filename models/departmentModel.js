@@ -33,3 +33,4 @@ const departmentSchema = new mongoose.Schema(
 const departmentModel = mongoose.model("departments", departmentSchema);
 
 export default departmentModel;
+//

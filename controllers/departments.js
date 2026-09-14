@@ -6,7 +6,7 @@ import {
   Api400Error,
 } from "../utils/custom_error/apiError.js";
 
-/* -------------------- CREATE -------------------- */
+/* -------------------- CREAR -------------------- */
 const create = AsyncWrapper.wrapAsync(async (req, res) => {
   if (!req.body.name || req.body.name.trim() === "") {
     throw new Api400Error(
@@ -174,3 +174,4 @@ export default {
   destructionId,
   updateId,
 };
+//

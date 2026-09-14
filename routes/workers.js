@@ -1,7 +1,7 @@
 import express from "express";
 import workers from "../controllers/workers.js";
 import { auth } from "../middleware/auth.js";
-
+// Rutas para el CRUD de trabajadores
 const routes = express.Router();
 
 /**

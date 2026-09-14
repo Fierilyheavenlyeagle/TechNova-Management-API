@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
+//
 dotenv.config();
 
 export const auth = (req, res, next) => {
@@ -29,3 +29,4 @@ export const auth = (req, res, next) => {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+//

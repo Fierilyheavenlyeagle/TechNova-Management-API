@@ -1,3 +1,4 @@
+//
 class AsyncWrapper {
   static wrapAsync(fn) {
     return function (req, res, next) {

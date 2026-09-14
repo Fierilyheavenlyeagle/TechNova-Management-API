@@ -6,7 +6,7 @@ const endpointsFiles = [
   "./routes/departments.js"
 ];
 
-
+// Define the Swagger documentation object
 const doc = {
   info: {
     title: "Company Project API",

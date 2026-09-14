@@ -5,7 +5,7 @@ import User from "../models/user.js"; // tu modelo de usuario
 import dotenv from "dotenv";
 
 dotenv.config();
-
+//
 // Estrategia Google OAuth
 passport.use(
   new GoogleStrategy(
