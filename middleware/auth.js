@@ -1,34 +1,62 @@
+
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// AUTHENTICATION MIDDLEWARE
-
 dotenv.config();
 
+// ========================================
+// JWT AUTHENTICATION MIDDLEWARE
+// ========================================
+
 export const auth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  // 1. Verify Authorization header
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Access denied. JWT token required.",
+    });
+  }
+
+  // 2. Extract JWT token
+  const token = authHeader.slice(7).trim();
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Token not provided.",
+    });
+  }
+
+  // 3. Verify server JWT configuration
+  if (!process.env.JWT_SECRET) {
+    return res.status(500).json({
+      success: false,
+      message: "Authentication is not configured.",
+    });
+  }
+
+  // 4. Validate JWT token
   try {
-    const authHeader = req.headers.authorization;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET,
+      {
+        algorithms: ["HS256"],
+      }
+    );
 
-    if (!authHeader) {
-      return res.status(401).json({ message: "Authorization header missing" });
-    }
-
-    if (!authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Invalid token format" });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({ message: "Token not provided" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    // Save authenticated user information
     req.user = decoded;
+
+    // Allow request to continue
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired JWT token.",
+    });
   }
 };
-//

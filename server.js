@@ -1,10 +1,15 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
 
+import "dotenv/config";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import fs from "node:fs";
 import cors from "cors";
+
+// ========================================
+// JWT AUTHENTICATION
+// ========================================
+
+import { auth } from "./middleware/auth.js";
 
 // ========================================
 // DATABASE
@@ -39,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 // ========================================
 
 const swaggerFile = JSON.parse(
-  fs.readFileSync("./swagger_output.json", "utf8"),
+  fs.readFileSync("./swagger_output.json", "utf8")
 );
 
 const swaggerOptions = {
@@ -61,54 +66,71 @@ const swaggerOptions = {
     // Mostrar duración de solicitudes
     displayRequestDuration: true,
 
-    // Mantener el orden de categorías definido en swagger.js
+    // Mantener el orden definido en swagger.js
     tagsSorter: undefined,
 
     // Métodos HTTP disponibles
-    supportedSubmitMethods: ["get", "post", "put", "delete", "patch"],
+    supportedSubmitMethods: [
+      "get",
+      "post",
+      "put",
+      "delete",
+      "patch"
+    ],
 
-    // Conservar autorización en la sesión
+    // Conservar autorización durante la sesión
     persistAuthorization: true,
   },
 
-  customSiteTitle: "Project-W03 | API Documentation",
+  customSiteTitle: "TechNova Management API | Documentation",
 };
 
-app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerFile, swaggerOptions));
+// Swagger visible sin JWT.
+// Las solicitudes a los endpoints sí requieren JWT.
+app.use(
+  "/api",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, swaggerOptions)
+);
 
 // ========================================
-// API ROUTES
+// HEALTH CHECK
 // ========================================
 
-// Workers
-app.use("/workers", workersRoutes);
-
-// Departments
-app.use("/departments", departmentRoutes);
-
-// Projects
-app.use("/projects", projectsRoutes);
-
-// Tasks
-app.use("/tasks", tasksRoutes);
-
-// Clients
-app.use("/clients", clientsRoutes);
-
-// ========================================
-// ERROR HANDLING
-// ========================================
-// Health Check
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "online",
     company: "TechNova Solutions",
     api: "TechNova Management API",
-    version: "1.0.0"
+    version: "1.0.0",
   });
 });
 
-// 404 - Endpoint not found
+// ========================================
+// PROTECTED API ROUTES - JWT
+// ========================================
+
+// Todas estas rutas requieren un JWT válido.
+
+// Workers
+app.use("/workers", auth, workersRoutes);
+
+// Departments
+app.use("/departments", auth, departmentRoutes);
+
+// Projects
+app.use("/projects", auth, projectsRoutes);
+
+// Tasks
+app.use("/tasks", auth, tasksRoutes);
+
+// Clients
+app.use("/clients", auth, clientsRoutes);
+
+// ========================================
+// 404 - ENDPOINT NOT FOUND
+// ========================================
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -118,11 +140,18 @@ app.use((req, res) => {
   });
 });
 
-// Global error handler
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || err.status || 500;
+// ========================================
+// GLOBAL ERROR HANDLER
+// ========================================
 
-  const message = err.description || err.message || "Internal Server Error";
+app.use((err, req, res, next) => {
+  const statusCode =
+    err.statusCode || err.status || 500;
+
+  const message =
+    err.description ||
+    err.message ||
+    "Internal Server Error";
 
   res.status(statusCode).json({
     success: false,
@@ -143,21 +172,28 @@ const startServer = async () => {
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log("================================");
-      console.log("     PROJECT-W03 BACKEND");
+      console.log("     TECHNOVA MANAGEMENT API");
       console.log("================================");
       console.log(`Server: http://localhost:${PORT}`);
       console.log(`Swagger: http://localhost:${PORT}/api`);
+      console.log(`Health: http://localhost:${PORT}/health`);
       console.log("--------------------------------");
-      console.log("Available API Categories:");
+      console.log("Protected API Categories:");
       console.log("1. Workers");
       console.log("2. Departments");
       console.log("3. Projects");
       console.log("4. Tasks");
       console.log("5. Clients");
+      console.log("--------------------------------");
+      console.log("JWT Authentication: ENABLED");
       console.log("================================");
     });
   } catch (error) {
-    console.error("Failed to start server:", error.message);
+    console.error(
+      "Failed to start server:",
+      error.message
+    );
+
     process.exit(1);
   }
 };

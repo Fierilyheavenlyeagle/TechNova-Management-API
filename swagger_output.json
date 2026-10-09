@@ -2,31 +2,31 @@
   "swagger": "2.0",
   "info": {
     "version": "2.0.0",
-    "title": "Company Management API",
-    "description": "REST API for managing workers, departments, projects, tasks and clients using Node.js, Express and MongoDB Atlas."
+    "title": "TechNova Management API",
+    "description": "REST API for managing workers, departments, projects, tasks and clients using Node.js, Express, MongoDB Atlas and JWT authentication."
   },
   "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
       "name": "Workers",
-      "description": "Worker Management"
+      "description": "Worker Management - JWT Required"
     },
     {
       "name": "Departments",
-      "description": "Department Management"
+      "description": "Department Management - JWT Required"
     },
     {
       "name": "Projects",
-      "description": "Project Management"
+      "description": "Project Management - JWT Required"
     },
     {
       "name": "Tasks",
-      "description": "Task Management"
+      "description": "Task Management - JWT Required"
     },
     {
       "name": "Clients",
-      "description": "Client Management"
+      "description": "Client Management - JWT Required"
     }
   ],
   "schemes": [
@@ -37,7 +37,7 @@
       "type": "apiKey",
       "in": "header",
       "name": "Authorization",
-      "description": "Enter: Bearer <your_token>"
+      "description": "Enter: Bearer YOUR_JWT_TOKEN"
     }
   },
   "consumes": [
@@ -69,11 +69,19 @@
         ],
         "responses": {
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Workers"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "post": {
@@ -87,11 +95,19 @@
         ],
         "responses": {
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Workers"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
@@ -113,11 +129,19 @@
         ],
         "responses": {
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Workers"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "put": {
@@ -137,11 +161,19 @@
         ],
         "responses": {
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Workers"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "delete": {
@@ -161,35 +193,73 @@
         ],
         "responses": {
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Workers"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
     "/departments/": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Departments"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Departments"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
@@ -202,15 +272,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Departments"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "put": {
@@ -221,15 +304,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Departments"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "delete": {
@@ -240,15 +336,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Departments"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
@@ -259,11 +368,26 @@
         ],
         "summary": "Get all projects",
         "description": "",
-        "responses": {
-          "default": {
-            "description": ""
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
-        }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -272,6 +396,11 @@
         "summary": "Create a project",
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -308,10 +437,18 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/projects/{id}": {
@@ -327,13 +464,26 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -347,13 +497,26 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -367,36 +530,79 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/tasks/": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Tasks"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Tasks"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
@@ -409,15 +615,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Tasks"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "put": {
@@ -428,15 +647,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Tasks"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "delete": {
@@ -447,39 +679,82 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Tasks"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
     "/clients/": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Clients"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Clients"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     },
@@ -492,15 +767,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Clients"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "put": {
@@ -511,15 +799,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Clients"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       },
       "delete": {
@@ -530,15 +831,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized - JWT token missing, invalid or expired."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "tags": [
           "Clients"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ]
       }
     }

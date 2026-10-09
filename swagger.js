@@ -11,13 +11,18 @@ dotenv.config();
 
 const outputFile = "./swagger_output.json";
 
-// Detectar rutas desde el servidor principal
+// Detectar rutas desde server.js
 const endpointsFiles = ["./server.js"];
 
-const isProduction = Boolean(process.env.RENDER_EXTERNAL_URL);
+// URL local o pública de Render
+const publicUrl =
+  process.env.SWAGGER_PUBLIC_URL ||
+  process.env.RENDER_EXTERNAL_URL;
+
+const isProduction = Boolean(publicUrl);
 
 const host = isProduction
-  ? new URL(process.env.RENDER_EXTERNAL_URL).host
+  ? new URL(publicUrl).host
   : `localhost:${process.env.PORT || 3000}`;
 
 // ========================================
@@ -27,9 +32,11 @@ const host = isProduction
 const doc = {
   info: {
     version: "2.0.0",
-    title: "Company Management API",
+    title: "TechNova Management API",
     description:
-      "REST API for managing workers, departments, projects, tasks and clients using Node.js, Express and MongoDB Atlas.",
+      "REST API for managing workers, departments, " +
+      "projects, tasks and clients using Node.js, " +
+      "Express, MongoDB Atlas and JWT authentication.",
   },
 
   host,
@@ -41,34 +48,34 @@ const doc = {
   produces: ["application/json"],
 
   // ========================================
-  // CATEGORIES
+  // API CATEGORIES
   // ========================================
 
   tags: [
     {
       name: "Workers",
-      description: "Worker Management",
+      description: "Worker Management - JWT Required",
     },
     {
       name: "Departments",
-      description: "Department Management",
+      description: "Department Management - JWT Required",
     },
     {
       name: "Projects",
-      description: "Project Management",
+      description: "Project Management - JWT Required",
     },
     {
       name: "Tasks",
-      description: "Task Management",
+      description: "Task Management - JWT Required",
     },
     {
       name: "Clients",
-      description: "Client Management",
+      description: "Client Management - JWT Required",
     },
   ],
 
   // ========================================
-  // AUTHENTICATION DOCUMENTATION
+  // JWT AUTHENTICATION
   // ========================================
 
   securityDefinitions: {
@@ -76,7 +83,9 @@ const doc = {
       type: "apiKey",
       in: "header",
       name: "Authorization",
-      description: "Enter: Bearer <your_token>",
+      description:
+        "Enter your JWT using this format: " +
+        "Bearer YOUR_JWT_TOKEN",
     },
   },
 
@@ -163,57 +172,136 @@ const httpMethods = [
   "delete",
 ];
 
-// Generar Swagger
-swaggerAutogen({ language: "en-US" })(
-  outputFile,
-  endpointsFiles,
-  doc
-)
-  .then(() => {
+// ========================================
+// GENERATE SWAGGER DOCUMENTATION
+// ========================================
+
+const generateSwagger = async () => {
+  try {
+    const result = await swaggerAutogen({
+      language: "en-US",
+    })(outputFile, endpointsFiles, doc);
+
+    if (result === false) {
+      throw new Error("Swagger generation failed");
+    }
+
     const swagger = JSON.parse(
       fs.readFileSync(outputFile, "utf8")
     );
 
-    // Asignar cada ruta a su categoría
+    // Ensure JWT security is defined
+    swagger.securityDefinitions = {
+      ...swagger.securityDefinitions,
+
+      ApiKeyAuth: {
+        type: "apiKey",
+        in: "header",
+        name: "Authorization",
+        description:
+          "Enter: Bearer YOUR_JWT_TOKEN",
+      },
+    };
+
+    let protectedOperations = 0;
+
+    // ========================================
+    // TAGS AND JWT SECURITY BY ROUTE
+    // ========================================
+
     for (const [path, operations] of Object.entries(
       swagger.paths || {}
     )) {
-      for (const [prefix, category] of Object.entries(
+      const matchedCategory = Object.entries(
         categories
-      )) {
-        if (
+      ).find(([prefix]) => {
+        return (
           path === prefix ||
           path.startsWith(prefix + "/")
-        ) {
-          for (const method of httpMethods) {
-            if (operations[method]) {
-              operations[method].tags = [category];
-            }
-          }
+        );
+      });
 
-          break;
+      // Keep /health and other public paths unprotected
+      if (!matchedCategory) {
+        continue;
+      }
+
+      const [, category] = matchedCategory;
+
+      for (const method of httpMethods) {
+        const operation = operations[method];
+
+        if (!operation) {
+          continue;
         }
+
+        // Assign correct category
+        operation.tags = [category];
+
+        // Require JWT in Swagger
+        operation.security = [
+          {
+            ApiKeyAuth: [],
+          },
+        ];
+
+        // Document unauthorized responses
+        operation.responses = {
+          ...operation.responses,
+
+          "401": {
+            description:
+              "Unauthorized - JWT token missing, " +
+              "invalid or expired.",
+          },
+        };
+
+        protectedOperations++;
       }
     }
 
-    // Guardar Swagger organizado
+    if (protectedOperations === 0) {
+      throw new Error(
+        "No protected endpoints were detected. " +
+        "Check route discovery in server.js."
+      );
+    }
+
+    // ========================================
+    // SAVE SWAGGER JSON
+    // ========================================
+
     fs.writeFileSync(
       outputFile,
       JSON.stringify(swagger, null, 2),
       "utf8"
     );
 
-    console.log("--------------------------------");
+    console.log("================================");
+    console.log(" TECHNOVA MANAGEMENT API");
+    console.log("================================");
     console.log("Swagger generated successfully!");
+    console.log(`Host: ${host}`);
+    console.log("JWT Authentication: ENABLED");
+    console.log(
+      `Protected operations: ${protectedOperations}`
+    );
     console.log("--------------------------------");
     console.log("Workers");
     console.log("Departments");
     console.log("Projects");
     console.log("Tasks");
     console.log("Clients");
-    console.log("--------------------------------");
-  })
-  .catch((error) => {
-    console.error("Swagger generation error:", error);
+    console.log("================================");
+
+  } catch (error) {
+    console.error(
+      "Swagger generation error:",
+      error.message
+    );
+
     process.exitCode = 1;
-  });
+  }
+};
+
+generateSwagger();
