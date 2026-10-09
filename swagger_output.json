@@ -1,193 +1,277 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Company Project API",
-    "description": "Cloud Operations API for managing Workers and Departments",
-    "version": "1.0.0"
+    "version": "2.0.0",
+    "title": "Company Management API",
+    "description": "REST API for managing workers, departments, projects, tasks and clients using Node.js, Express and MongoDB Atlas."
   },
+  "host": "localhost:3000",
   "basePath": "/",
-  "produces": ["application/json"],
   "tags": [
-    { "name": "Workers", "description": "Worker Management - Cloud Operations" },
-    { "name": "Departments", "description": "Department Management - Cloud Operations" }
+    {
+      "name": "Workers",
+      "description": "Worker Management"
+    },
+    {
+      "name": "Departments",
+      "description": "Department Management"
+    },
+    {
+      "name": "Projects",
+      "description": "Project Management"
+    },
+    {
+      "name": "Tasks",
+      "description": "Task Management"
+    },
+    {
+      "name": "Clients",
+      "description": "Client Management"
+    }
   ],
-
-"securityDefinitions": {
-  "Bearer": {
-    "type": "apiKey",
-    "name": "Authorization",
-    "in": "header",
-    "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
-  }
-},
-"security": [
-  { "Bearer": [] }
-],
-
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Enter: Bearer <your_token>"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-
+    "/health": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/workers/": {
       "get": {
-        "tags": ["Workers"],
-        "description": "Get all workers",
-        "responses": {
-          "200": { "description": "OK" },
-          "500": { "description": "Internal Server Error" }
-        }
-      },
-      "post": {
-        "tags": ["Workers"],
-        "description": "Create a new worker",
+        "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/Worker" }
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "201": { "description": "Created" },
-          "400": { "description": "Bad Request" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Workers"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Workers"
+        ]
       }
     },
-
     "/workers/{id}": {
       "get": {
-        "tags": ["Workers"],
-        "description": "Get worker by id",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "example": 1
-          }
-        ],
-        "responses": {
-          "200": { "description": "OK" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
-      },
-
-      "put": {
-        "tags": ["Workers"],
-        "description": "Update worker by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "example": 1
+            "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": { "example": "John Smith" },
-                "age": { "example": 30 },
-                "position": { "example": "Cloud Engineer" },
-                "department": { "example": "IT" },
-                "salary": { "example": 85000 },
-                "active": { "example": true }
-              }
-            }
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "200": { "description": "Updated Successfully" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Workers"
+        ]
       },
-
-      "delete": {
-        "tags": ["Workers"],
-        "description": "Delete worker by id",
+      "put": {
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "example": 1
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
-          "204": { "description": "Deleted Successfully" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Workers"
+        ]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Workers"
+        ]
       }
     },
-
     "/departments/": {
-      "get": {
-        "tags": ["Departments"],
-        "description": "Get all departments",
+      "post": {
+        "description": "",
         "responses": {
-          "200": { "description": "OK" },
-          "500": { "description": "Internal Server Error" }
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Departments"
+        ]
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Departments"
+        ]
+      }
+    },
+    "/departments/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Departments"
+        ]
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Departments"
+        ]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Departments"
+        ]
+      }
+    },
+    "/projects/": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Get all projects",
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
         }
       },
       "post": {
-        "tags": ["Departments"],
-        "description": "Create a new department",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/Department" }
-          }
+        "tags": [
+          "Projects"
         ],
-        "responses": {
-          "201": { "description": "Created" },
-          "400": { "description": "Bad Request" },
-          "500": { "description": "Internal Server Error" }
-        }
-      }
-    },
-
-    "/departments/{id}": {
-      "get": {
-        "tags": ["Departments"],
-        "description": "Get department by id",
+        "summary": "Create a project",
+        "description": "",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "example": 1
-          }
-        ],
-        "responses": {
-          "200": { "description": "OK" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
-      },
-
-      "put": {
-        "tags": ["Departments"],
-        "description": "Update department by id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "example": 1
-          },
           {
             "name": "body",
             "in": "body",
@@ -195,69 +279,458 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": { "example": "Cloud Operations" },
-                "description": { "example": "Manages cloud infrastructure and DevOps." },
-                "location": { "example": "Building B - Floor 3" },
-                "manager": { "example": "Sarah Connor" },
-                "budget": { "example": 150000 },
-                "active": { "example": true }
+                "name": {
+                  "type": "string",
+                  "example": "Company Website"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Develop a company website"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Pending"
+                },
+                "manager": {
+                  "type": "string",
+                  "example": "John Smith"
+                },
+                "budget": {
+                  "type": "number",
+                  "example": 15000
+                },
+                "active": {
+                  "type": "boolean",
+                  "example": true
+                }
               }
             }
           }
         ],
         "responses": {
-          "200": { "description": "Updated Successfully" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
+          "default": {
+            "description": ""
+          }
         }
-      },
-
-      "delete": {
-        "tags": ["Departments"],
-        "description": "Delete department by id",
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Get project by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "example": 1
+            "type": "string"
           }
         ],
         "responses": {
-          "204": { "description": "Deleted Successfully" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
+          "default": {
+            "description": ""
+          }
         }
+      },
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Update a project",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Delete a project",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tasks/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/clients/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      }
+    },
+    "/clients/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
       }
     }
   },
-
   "definitions": {
-
     "Worker": {
       "type": "object",
-      "required": ["name", "age"],
       "properties": {
-        "name": { "type": "string", "example": "John Doe" },
-        "age": { "type": "integer", "example": 28 },
-        "position": { "type": "string", "example": "DevOps Engineer" },
-        "department": { "type": "string", "example": "Cloud Operations" },
-        "salary": { "type": "number", "example": 90000 },
-        "active": { "type": "boolean", "example": true }
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "John Smith"
+        },
+        "age": {
+          "type": "string",
+          "example": "30"
+        },
+        "position": {
+          "type": "string",
+          "example": "Developer"
+        },
+        "department": {
+          "type": "string",
+          "example": "IT"
+        },
+        "salary": {
+          "type": "string",
+          "example": "3500"
+        },
+        "active": {
+          "type": "boolean",
+          "example": true
+        }
       }
     },
-
     "Department": {
       "type": "object",
-      "required": ["name"],
       "properties": {
-        "name": { "type": "string", "example": "Human Resources" },
-        "description": { "type": "string", "example": "Handles recruitment and employee relations." },
-        "location": { "type": "string", "example": "Building A - Floor 2" },
-        "manager": { "type": "string", "example": "Maria Gonzalez" },
-        "budget": { "type": "number", "example": 50000 },
-        "active": { "type": "boolean", "example": true }
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Information Technology"
+        },
+        "description": {
+          "type": "string",
+          "example": "Technology Department"
+        },
+        "location": {
+          "type": "string",
+          "example": "Lima"
+        },
+        "manager": {
+          "type": "string",
+          "example": "John Smith"
+        },
+        "budget": {
+          "type": "number",
+          "example": 50000
+        },
+        "active": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Company Website"
+        },
+        "description": {
+          "type": "string",
+          "example": "Develop a company website"
+        },
+        "status": {
+          "type": "string",
+          "example": "In Progress"
+        },
+        "manager": {
+          "type": "string",
+          "example": "John Smith"
+        },
+        "startDate": {
+          "type": "string",
+          "example": "2026-10-10"
+        },
+        "endDate": {
+          "type": "string",
+          "example": "2026-12-20"
+        },
+        "budget": {
+          "type": "number",
+          "example": 15000
+        },
+        "active": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "Design Database"
+        },
+        "description": {
+          "type": "string",
+          "example": "Create MongoDB models"
+        },
+        "projectId": {
+          "type": "number",
+          "example": 1
+        },
+        "assignedTo": {
+          "type": "string",
+          "example": "Jane Smith"
+        },
+        "priority": {
+          "type": "string",
+          "example": "High"
+        },
+        "status": {
+          "type": "string",
+          "example": "Pending"
+        },
+        "dueDate": {
+          "type": "string",
+          "example": "2026-11-15"
+        },
+        "completed": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    },
+    "Client": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Carlos Rodriguez"
+        },
+        "email": {
+          "type": "string",
+          "example": "carlos@example.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "987654321"
+        },
+        "company": {
+          "type": "string",
+          "example": "Tech Solutions"
+        },
+        "address": {
+          "type": "string",
+          "example": "Av. Principal 123"
+        },
+        "city": {
+          "type": "string",
+          "example": "Lima"
+        },
+        "country": {
+          "type": "string",
+          "example": "Peru"
+        },
+        "active": {
+          "type": "boolean",
+          "example": true
+        }
       }
     }
   }
