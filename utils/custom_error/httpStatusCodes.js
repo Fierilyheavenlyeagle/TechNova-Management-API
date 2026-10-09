@@ -1,3 +1,4 @@
+// Custom HTTP Status Codes
 const httpStatusCodes = {
   ok: 200,
   BAD_REQUEST: 400,

@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-//
+
+// AUTHENTICATION MIDDLEWARE
+
 dotenv.config();
 
 export const auth = (req, res, next) => {

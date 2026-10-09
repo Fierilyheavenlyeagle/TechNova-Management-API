@@ -1,3 +1,4 @@
+// Custom Base Error Class
 class BaseError extends Error {
   constructor(name,statusCode, isOperational, description){
 

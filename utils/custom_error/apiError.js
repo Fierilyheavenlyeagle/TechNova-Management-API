@@ -2,6 +2,7 @@ import httpStatusCodes from "./httpStatusCodes.js";
 
 import BaseError from "./baseError.js";
 
+// Custom API Error Classes
 class Api404Error extends BaseError {
   constructor(
     name,
@@ -12,7 +13,7 @@ class Api404Error extends BaseError {
     super(name, statusCode, isOperational, description);
   }
 }
-
+// Custom API Error Classes
 class Api500Error extends BaseError {
   constructor(
     name,
@@ -23,7 +24,7 @@ class Api500Error extends BaseError {
     super(name, statusCode, isOperational, description);
   }
 }
-
+// Custom API Error Classes
 class Api400Error extends BaseError {
   constructor(
     name,
